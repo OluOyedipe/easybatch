@@ -1,0 +1,62 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.2.RELEASE'
+    }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'com.bmuschko:gradle-docker-plugin:3.0.4'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.container.*
+import com.bmuschko.gradle.docker.tasks.*
+
+jar {
+    baseName = 'easybatch'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-batch')
+    compile("org.hsqldb:hsqldb")
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
+    compile 'org.springframework:spring-oxm'
+
+    runtime 'mysql:mysql-connector-java'
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split('\\s+')
+    }
+}
+
+task dockerVersion(type: DockerVersion) {
+
+}
+
+task dockerInfo(type: DockerInfo) {
+
+}
+
+task startMysqlContainer(type: DockerStartContainer) {
+    println 'Starting MYSQL container'
+}

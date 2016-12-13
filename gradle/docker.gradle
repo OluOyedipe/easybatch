@@ -1,0 +1,11 @@
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.container.*
+
+repositories {
+    mavenCentral()
+}
+
+task startMysqlContainer(type: DockerStartContainer) {
+    println 'Starting MYSQL container'
+}
