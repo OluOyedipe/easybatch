@@ -1,4 +1,4 @@
-= EasyETL REST Service API Guide
+= EasyBatch REST Service API Guide
 Olu Oyedipe
 :doctype: book
 :icons: font
