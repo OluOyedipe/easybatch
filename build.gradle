@@ -8,45 +8,74 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'com.bmuschko:gradle-docker-plugin:3.0.4'
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.2'
     }
 }
+
+ext {
+    springBatchAdminVersion = '2.0.0.M1'
+    snippetsDir = file('build/generated-snippets')
+}
+
+ext['spock.version'] = '1.1-groovy-2.4-rc-3'
 
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'com.bmuschko.docker-remote-api'
+apply plugin: 'org.asciidoctor.convert'
 
 import com.bmuschko.gradle.docker.tasks.container.*
 import com.bmuschko.gradle.docker.tasks.*
 
 jar {
+    dependsOn asciidoctor
     baseName = 'easybatch'
     version = '0.0.1-SNAPSHOT'
+
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven {
+        url 'http://repo.spring.io/release/'
+    }
 }
 
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-batch')
+    compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.hsqldb:hsqldb")
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
     compile 'org.springframework:spring-oxm'
+    compile("org.springframework.batch:spring-batch-admin-manager:$springBatchAdminVersion") {
+        exclude group: 'org.slf4j', module:'slf4j-log4j12'
+    }
 
     runtime 'mysql:mysql-connector-java'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.spockframework:spock-spring')
+    testCompile 'com.jayway.jsonpath:json-path',
+            'com.jayway.jsonpath:json-path-assert',
+            'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
 bootRun {
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }
+}
+
+springBoot {
+    executable = true
 }
 
 task dockerVersion(type: DockerVersion) {
@@ -59,4 +88,14 @@ task dockerInfo(type: DockerInfo) {
 
 task startMysqlContainer(type: DockerStartContainer) {
     println 'Starting MYSQL container'
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    attributes 'snippets': snippetsDir
+    inputs.dir snippetsDir
+    dependsOn test
 }

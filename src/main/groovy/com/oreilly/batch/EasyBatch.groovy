@@ -15,29 +15,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 @Slf4j
 @SpringBootApplication
 @EnableBatchProcessing
-class EasyBatch implements ApplicationRunner {
+class EasyBatch {
 
     @Autowired
     JobOperator jobOperator
 
     static void main(String[] args) {
         SpringApplication.run(EasyBatch, args)
-    }
-
-    @Override
-    void run(ApplicationArguments args) throws Exception {
-        List<String> jobsToRun = args.getOptionValues('job')
-
-        if (jobsToRun?.size() > 0) {
-            log.info "Running jobs $jobsToRun"
-        }
-        else {
-            log.warn "No jobs found to run!"
-        }
-
-        jobsToRun.each {
-            jobOperator.startNextInstance(it)
-
-        }
     }
 }

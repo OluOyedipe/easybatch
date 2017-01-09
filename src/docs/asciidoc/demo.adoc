@@ -1,0 +1,35 @@
+= EasyETL REST Service API Guide
+Olu Oyedipe
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+:job-controller-dir: /job-launching-controller-specification/test that a job launch is successful
+= Resources
+
+[[starting]]
+== Start a job
+
+[[starting-using-curl]]
+=== using curl
+include::{snippets}/{job-controller-dir}/curl-request.adoc[]
+
+[[starting-using-httppie]]
+=== using httpie
+include::{snippets}/{job-controller-dir}/httpie-request.adoc[]
+
+[[path-parameters]]
+=== Path Parameters
+include::{snippets}/{job-controller-dir}/path-parameters.adoc[]
+
+[[response]]
+== Response
+[[response-code]]
+=== Returned response
+
+The response will be:
+
+include::{snippets}/{job-controller-dir}/http-response.adoc[]
