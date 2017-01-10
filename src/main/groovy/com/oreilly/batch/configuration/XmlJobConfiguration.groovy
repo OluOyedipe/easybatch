@@ -26,6 +26,9 @@ class XmlJobConfiguration {
     @Autowired
     StepBuilderFactory stepBuilderFactory
 
+    @Autowired
+    CustomStepBuilderFactory customStepBuilderFactory
+
     @Bean
     Job xmlJob() {
         jobBuilderFactory.get('xmlJob').start(xmlReadStep()).incrementer(new RunIdIncrementer()).build()
@@ -33,11 +36,15 @@ class XmlJobConfiguration {
 
     @Bean
     Step xmlReadStep() {
-        stepBuilderFactory.get('xmlReadStep')
-                .<Customer, Customer>chunk(10)
+        customStepBuilderFactory.get('xmlJob')
                 .reader(customerXmlFileItemReader())
                 .writer(customerItemWriter())
                 .build()
+    }
+
+    @Bean
+    CustomStepBuilderFactory<Customer, Customer> customStepBuilderFactory() {
+        new CustomStepBuilderFactory<Customer, Customer>(stepBuilderFactory, 10)
     }
 
     @Bean

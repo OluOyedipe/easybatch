@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.context.annotation.Import
 import org.springframework.core.task.TaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor

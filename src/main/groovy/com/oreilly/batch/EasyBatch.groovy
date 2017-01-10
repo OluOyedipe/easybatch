@@ -8,6 +8,7 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.context.annotation.EnableAspectJAutoProxy
 
 /**
  * Created by oo185005 on 12/10/16.
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 @Slf4j
 @SpringBootApplication
 @EnableBatchProcessing
+@EnableAspectJAutoProxy
 class EasyBatch {
 
     @Autowired
