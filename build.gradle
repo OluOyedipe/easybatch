@@ -12,6 +12,11 @@ buildscript {
     }
 }
 
+
+plugins {
+    id "com.gorylenko.gradle-git-properties" version "1.4.17"
+}
+
 ext {
     springBatchAdminVersion = '2.0.0.M1'
     snippetsDir = file('build/generated-snippets')
@@ -48,16 +53,17 @@ repositories {
     }
 }
 
-
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-batch')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
     compile("org.hsqldb:hsqldb")
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
     compile 'org.springframework:spring-oxm'
     compile("org.springframework.batch:spring-batch-admin-manager:$springBatchAdminVersion") {
         exclude group: 'org.slf4j', module:'slf4j-log4j12'
     }
+    compile('io.dropwizard.metrics:metrics-core')
 
     runtime 'mysql:mysql-connector-java'
 

@@ -1,11 +1,13 @@
 package com.oreilly.batch.configuration
 
 import com.oreilly.batch.domain.Customer
+import com.oreilly.batch.listeners.InstrumentedItemReadListener
 import groovy.util.logging.Slf4j
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
+import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.launch.support.RunIdIncrementer
 import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.xml.StaxEventItemReader
@@ -45,6 +47,11 @@ class XmlJobConfiguration {
     @Bean
     CustomStepBuilderFactory<Customer, Customer> customStepBuilderFactory() {
         new CustomStepBuilderFactory<Customer, Customer>(stepBuilderFactory, 10)
+    }
+
+    @Bean
+    InstrumentedItemReadListener instrumentedItemReadListener() {
+        new InstrumentedItemReadListener('xmlJob')
     }
 
     @Bean
